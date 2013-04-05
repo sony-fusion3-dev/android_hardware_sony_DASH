@@ -69,6 +69,10 @@ $(yes-var-compass-ak896xna)-files += ak896xna.c wrappers/ak896xna_sensors.c
 #
 
 $(SOMC_CFG_SENSORS_LIGHT_AS3676)-files += as3676_als.c
+ifneq ($(SOMC_CFG_SENSORS_LIGHT_AS3676_PATH),)
+$(SOMC_CFG_SENSORS_LIGHT_AS3676)-cflags += -DALS_PATH=\"$(SOMC_CFG_SENSORS_LIGHT_AS3676_PATH)\"
+endif
+
 $(SOMC_CFG_SENSORS_LIGHT_LM3533)-files += lm3533_als.c
 
 $(SOMC_CFG_SENSORS_LIGHT_LIBALS)-files += light_sensor_als.c

@@ -13,7 +13,13 @@
 #include "sensor_util.h"
 #include "sensors_id.h"
 
-#define ALS "/sys/devices/i2c-3/3-0040/adc_als_value"
+static const char *ALS = {
+#ifdef ALS_PATH
+    ALS_PATH
+#else
+    "/sys/devices/i2c-3/3-0040/adc_als_value"
+#endif
+};
 
 static struct sensor_desc light_sensor;
 
