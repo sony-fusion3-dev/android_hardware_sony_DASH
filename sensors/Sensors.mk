@@ -69,6 +69,8 @@ $(yes-var-compass-ak896xna)-files += ak896xna.c wrappers/ak896xna_sensors.c
 #
 
 $(SOMC_CFG_SENSORS_LIGHT_AS3676)-files += as3676_als.c
+$(SOMC_CFG_SENSORS_LIGHT_AS3676)-cflags += -DALS_CHIP_MAXRANGE=4900
+
 ifneq ($(SOMC_CFG_SENSORS_LIGHT_AS3676_PATH),)
 $(SOMC_CFG_SENSORS_LIGHT_AS3676)-cflags += -DALS_PATH=\"$(SOMC_CFG_SENSORS_LIGHT_AS3676_PATH)\"
 endif
