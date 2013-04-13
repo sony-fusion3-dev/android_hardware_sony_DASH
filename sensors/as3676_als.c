@@ -106,7 +106,7 @@ static struct sensor_desc light_sensor = {
 		.version = sizeof(sensors_event_t),
 		.handle = SENSOR_LIGHTSENSOR_HANDLE,
 		.type = SENSOR_TYPE_LIGHT,
-		.maxRange = ALS_CHIP_MAXRANGE,
+		.maxRange = LIGHT_RANGE,
 		.resolution = 1.0,
 		.power = 1
 	},
