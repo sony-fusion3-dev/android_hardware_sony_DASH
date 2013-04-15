@@ -14,8 +14,6 @@
 #include "sensors_id.h"
 #include "sensors_sysfs.h"
 
-#define LM3533_DEV "/sys/devices/i2c-0/0-0036/"
-
 static struct sensor_desc light_sensor;
 
 struct sensor_desc {
@@ -55,7 +53,7 @@ static int light_init(struct sensor_api_t *s)
 	struct sensor_desc *d = container_of(s, struct sensor_desc, api);
 
 	sensors_worker_init(&d->worker, light_poll, &d->worker);
-	sensors_sysfs_init(&d->sysfs, LM3533_DEV, SYSFS_TYPE_ABS_PATH);
+	sensors_sysfs_init(&d->sysfs, ALS_PATH, SYSFS_TYPE_ABS_PATH);
 
 	return 0;
 }
@@ -71,7 +69,7 @@ static int light_activate(struct sensor_api_t *s, int enable)
 		d->sysfs.write_int(&d->sysfs, "als_enable", 1);
 
 		count = snprintf(result_path, sizeof(result_path), "%s/%s",
-			 LM3533_DEV, "als_result");
+			 ALS_PATH, "als_result");
 		if ((count < 0) || (count >= (int)sizeof(result_path))) {
 			ALOGE("%s: snprintf failed! %d\n", __func__, count);
 			return -1;
@@ -119,7 +117,7 @@ static struct sensor_desc light_sensor = {
 		.version = sizeof(sensors_event_t),
 		.handle = SENSOR_LIGHTSENSOR_HANDLE,
 		.type = SENSOR_TYPE_LIGHT,
-		.maxRange = 1530,
+		.maxRange = ALS_CHIP_MAXRANGE,
 		.resolution = 1.0,
 		.power = 1,
 		.stringType = SENSOR_STRING_TYPE_LIGHT,
