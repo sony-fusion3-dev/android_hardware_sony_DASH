@@ -45,6 +45,8 @@ static void *light_poll(void *arg)
 
 	/*convert to lux value*/
 	lux = atof(buf)*12;
+	if (lux <= 0)
+		lux = 1;
 
 	data.light = lux;
 	data.version = light_sensor.sensor.version;
