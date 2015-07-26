@@ -154,16 +154,6 @@ $(yes-var-compass-lsm303dlh)-c-includes += $(LOCAL_PATH)/libs/inemo \
 		$(LOCAL_PATH)/libs/inemo/lib/libSpacePointAPI_opt2_1
 endif
 
-ifeq ($(SOMC_CFG_SENSORS_GYRO_L3GD20),yes)
-$(yes-var-compass-lsm303dlh)-files += wrappers/inemo.c
-$(yes-var-compass-lsm303dlh)-static-libs += iNemoEngine
-$(yes-var-compass-lsm303dlh)-cflags += -O3 -DUSE_MMAP
-$(yes-var-compass-lsm303dlh)-c-includes += $(LOCAL_PATH)/libs/inemo \
-		$(LOCAL_PATH)/libs/inemo/lib/sensors_compass_API \
-		$(LOCAL_PATH)/libs/inemo/lib/MEMSAlgLib_eCompass \
-		$(LOCAL_PATH)/libs/inemo/lib/libSpacePointAPI_opt2_1
-endif
-
 #
 # eCompass, Magnetometer
 #
