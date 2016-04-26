@@ -31,12 +31,12 @@
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
 
 #define LOCK(p) do { \
-	ALOGD("%s(%d): %s: lock\n", __FILE__, __LINE__, __func__); \
+	ALOGV("%s(%d): %s: lock\n", __FILE__, __LINE__, __func__); \
 	pthread_mutex_lock(p); \
 } while (0)
 
 #define UNLOCK(p) do { \
-	ALOGD("%s(%d): %s: unlock\n", __FILE__, __LINE__, __func__); \
+	ALOGV("%s(%d): %s: unlock\n", __FILE__, __LINE__, __func__); \
 	pthread_mutex_unlock(p); \
 } while (0)
 
