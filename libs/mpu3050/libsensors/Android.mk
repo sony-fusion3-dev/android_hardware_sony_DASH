@@ -22,7 +22,9 @@ include $(CLEAR_VARS)
 LOCAL_MODULE_TAGS := optional
 LOCAL_PREBUILT_LIBS := libmlplatform.so
 include $(BUILD_MULTI_PREBUILT)
+
 else
+ifneq ($(SOMC_CFG_SENSORS_MPU3050_DUMMY),)
 # Or else build the dummy lib
 
 include $(CLEAR_VARS)
@@ -31,5 +33,7 @@ LOCAL_MODULE := libMPU3050
 LOCAL_MODULE_TAGS := optional
 LOCAL_SRC_FILES := libMPU3050_dummy.c
 include $(BUILD_SHARED_LIBRARY)
+
+endif
 endif
 
