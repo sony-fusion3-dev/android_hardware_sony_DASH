@@ -20,6 +20,7 @@
 #include "sensors_log.h"
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 #include "sensors_list.h"
 #include "sensors_config.h"
 #include "sensors_fifo.h"
@@ -67,6 +68,60 @@ static int sensors_module_poll(struct sensors_poll_device_t *dev,
 	return ret;
 }
 
+static int sensors_module_batch(struct sensors_poll_device_1 *dev,
+				    int handle, int flags, int64_t ns, int64_t timeout)
+{
+	struct sensor_api_t* api = sensors_list_get_api_from_handle(handle);
+	const struct sensor_t* sensor = sensors_list_get_sensor_from_handle(handle);
+
+	if (!api || !sensor) {
+		ALOGE("%s: unable to find handle or sensor!", __func__);
+		return -1;
+	}
+
+	// NOTE: unlike setDelay(), batch() can be called when the
+	// sensor is disabled.
+
+	// Negative values are not allowed
+	if (ns < 0 || timeout < 0) {
+		ALOGE("%s: Invalid parameters (ns = %lld, timeout = %lld)", __func__, ns, timeout);
+		return -EINVAL;
+	}
+
+	// The HAL should silently clamp ns. Here it is assumed
+	// that maxDelay and minDelay are set properly
+	int32_t minDelay = sensor->minDelay;
+	int32_t maxDelay = sensor->maxDelay;
+	if (minDelay >= 0 && ns < minDelay) {
+		ALOGE("%s: handle %d, type %d, fixed ns %lld to minDelay %d", __func__, handle,
+				sensor->type, ns, minDelay);
+		ns = minDelay;
+	} else if (maxDelay > 0 && ns > maxDelay) {
+		ALOGE("%s: handle %d, type %d, fixed ns %lld to maxDelay %d", __func__, handle,
+				sensor->type, ns, maxDelay);
+		ns = maxDelay;
+	}
+
+	/*
+	 * NOTE: the kernel drivers currently don't support batching,
+	 ** so using setDelay() (now deprecated) is enough.
+	 **/
+	return api->set_delay(api, ns);
+}
+
+static int sensors_module_flush(sensors_poll_device_1_t *dev,
+			       int handle)
+{
+	struct sensor_api_t* api = sensors_list_get_api_from_handle(handle);
+
+	if (!api) {
+		ALOGE("%s: unable to find handle!", __func__);
+		return -1;
+	}
+
+	return -EINVAL;
+}
+
 static int sensors_module_close(struct hw_device_t* device)
 {
 	sensors_fifo_deinit();
@@ -82,7 +137,7 @@ static int sensors_init_iterator(struct sensor_api_t* api, void *arg)
 
 static int sensors_module_open(const struct hw_module_t* module, const char* id, struct hw_device_t** device)
 {
-	struct sensors_poll_device_t *dev;
+	sensors_poll_device_1_t *dev;
 
 	if (strcmp(id, SENSORS_HARDWARE_POLL))
 		return 0;
@@ -93,12 +148,14 @@ static int sensors_module_open(const struct hw_module_t* module, const char* id,
 
 	memset(dev, 0, sizeof(*dev));
 	dev->common.tag = HARDWARE_DEVICE_TAG;
-	dev->common.version = 0;
+	dev->common.version = SENSORS_DEVICE_API_VERSION_1_3;
 	dev->common.module = (struct hw_module_t*)module;
 	dev->common.close = sensors_module_close;
 	dev->activate = sensors_module_activate;
 	dev->setDelay = sensors_module_set_delay;
 	dev->poll = sensors_module_poll;
+	dev->batch = sensors_module_batch;
+	dev->flush = sensors_module_flush;
 
 	*device = (struct hw_device_t*) dev;
 
