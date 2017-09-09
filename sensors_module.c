@@ -40,6 +40,9 @@ static int sensors_module_set_delay(struct sensors_poll_device_t *dev,
                 return -1;
         }
 
+	ALOGV("%s: handle %d, type %d, delay %lld", __func__, handle,
+			sensors_list_get_sensor_from_handle(handle)->type, ns);
+
 	ret = api->set_delay(api, ns);
 
 	return ret;
@@ -57,6 +60,9 @@ static int sensors_module_activate(struct sensors_poll_device_t *dev,
                 return -1;
         }
 
+	ALOGV("%s: handle %d, type %d, enabled %d", __func__, handle,
+			sensors_list_get_sensor_from_handle(handle)->type, enabled);
+
 	if (api->activate(api, enabled) < 0)
 		return -1;
 
@@ -67,6 +73,8 @@ static int sensors_module_poll(struct sensors_poll_device_t *dev,
 			       sensors_event_t* data, int count)
 {
 	UNUSED_PARAM(dev);
+
+	ALOGV("%s: count %d", __func__, count);
 
 	int ret;
 
@@ -114,6 +122,9 @@ static int sensors_module_batch(struct sensors_poll_device_1 *dev,
 		ns = maxDelay;
 	}
 
+	ALOGV("%s: handle %d, type %d, flags %d, ns %lld, timeout %lld", __func__, handle,
+			sensor->type, flags, ns, timeout);
+
 	/*
 	 * NOTE: the kernel drivers currently don't support batching,
 	 ** so using setDelay() (now deprecated) is enough.
@@ -133,11 +144,16 @@ static int sensors_module_flush(sensors_poll_device_1_t *dev,
 		return -1;
 	}
 
+	ALOGV("%s: handle %d, type %d", __func__, handle,
+			sensors_list_get_sensor_from_handle(handle)->type);
+
 	return -EINVAL;
 }
 
 static int sensors_module_close(struct hw_device_t* device)
 {
+	ALOGV("%s", __func__);
+
 	sensors_fifo_deinit();
 	sensors_config_destroy();
 	free(device);
