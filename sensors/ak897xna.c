@@ -217,6 +217,10 @@ static struct sensor_desc ak897xna_magnetic = {
 		.resolution = AKM_CHIP_RESOLUTION,
 		.power = AKM_CHIP_POWER,
 		.minDelay = 5000,
+		.stringType = SENSOR_STRING_TYPE_MAGNETIC_FIELD,
+		.requiredPermission = 0,
+		.maxDelay = 250000000,
+		.flags = SENSOR_FLAG_CONTINUOUS_MODE,
 	},
 	.api = {
 		.init = ak897x_init,
