@@ -363,8 +363,7 @@ static int ak896x_delay(struct sensor_api_t *s, int64_t ns)
 	akm.delay_requests[sensor] = ns;
 
 	for (i = 0; i < NUMSENSORS; i++) {
-		if ((akm.enable_mask & (1 << i)) &&
-			(akm.delay_requests[i] != CLIENT_DELAY_UNUSED)) {
+		if (akm.delay_requests[i] != CLIENT_DELAY_UNUSED) {
 			if ((delay_tmp == CLIENT_DELAY_UNUSED) ||
 			    (delay_tmp > akm.delay_requests[i]))
 				delay_tmp = akm.delay_requests[i];
