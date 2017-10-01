@@ -8,7 +8,7 @@ include $(CLEAR_VARS)
 
 DASH_ROOT := $(LOCAL_PATH)
 LOCAL_PRELINK_MODULE := false
-LOCAL_MODULE_PATH := $(TARGET_OUT_SHARED_LIBRARIES)/hw
+LOCAL_MODULE_RELATIVE_PATH := hw
 LOCAL_SHARED_LIBRARIES := \
 			liblog \
 			libcutils
@@ -44,6 +44,7 @@ LOCAL_SHARED_LIBRARIES += $(yes-shared-libs)
 
 LOCAL_MODULE := sensors.$(TARGET_BOARD_PLATFORM)
 LOCAL_MODULE_TAGS := optional
+LOCAL_PROPRIETARY_MODULE := true
 include $(BUILD_SHARED_LIBRARY)
 
 include $(call first-makefiles-under, $(LOCAL_PATH)/libs)

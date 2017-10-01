@@ -8,6 +8,7 @@ ifneq ($(SOMC_CFG_SENSORS_AKM8972_DUMMY),)
 
 LOCAL_MODULE := libsensors_akm8972
 LOCAL_MODULE_TAGS := optional
+LOCAL_PROPRIETARY_MODULE := true
 LOCAL_SRC_FILES += libsensors_akm8972_dummy.c
 include $(BUILD_SHARED_LIBRARY)
 
