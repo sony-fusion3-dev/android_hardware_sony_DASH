@@ -128,7 +128,7 @@ static struct sensor_desc light_sensor = {
 		.power = 1,
 		.stringType = SENSOR_STRING_TYPE_LIGHT,
 		.requiredPermission = 0,
-		.maxDelay = 10000000,
+		.maxDelay = 100000000,
 		.flags = SENSOR_FLAG_ON_CHANGE_MODE,
 	},
 	.api = {
