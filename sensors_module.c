@@ -37,8 +37,8 @@ static int sensors_module_set_delay(struct sensors_poll_device_t *dev,
 
 	if (!api) {
 		ALOGE("%s: unable to find handle!", __func__);
-                return -1;
-        }
+		return -1;
+	}
 
 	ALOGV("%s: handle %d, type %d, delay %lld", __func__, handle,
 			sensors_list_get_sensor_from_handle(handle)->type, ns);
@@ -57,8 +57,8 @@ static int sensors_module_activate(struct sensors_poll_device_t *dev,
 
 	if (!api) {
 		ALOGE("%s: unable to find handle!", __func__);
-                return -1;
-        }
+		return -1;
+	}
 
 	ALOGV("%s: handle %d, type %d, enabled %d", __func__, handle,
 			sensors_list_get_sensor_from_handle(handle)->type, enabled);
@@ -113,11 +113,11 @@ static int sensors_module_batch(struct sensors_poll_device_1 *dev,
 	int32_t minDelay = sensor->minDelay;
 	int32_t maxDelay = sensor->maxDelay;
 	if (minDelay >= 0 && ns < minDelay) {
-		ALOGE("%s: handle %d, type %d, fixed ns %lld to minDelay %d", __func__, handle,
+		ALOGD("%s: handle %d, type %d, fixed ns %lld to minDelay %d", __func__, handle,
 				sensor->type, ns, minDelay);
 		ns = minDelay;
 	} else if (maxDelay > 0 && ns > maxDelay) {
-		ALOGE("%s: handle %d, type %d, fixed ns %lld to maxDelay %d", __func__, handle,
+		ALOGD("%s: handle %d, type %d, fixed ns %lld to maxDelay %d", __func__, handle,
 				sensor->type, ns, maxDelay);
 		ns = maxDelay;
 	}
