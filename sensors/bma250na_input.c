@@ -193,7 +193,6 @@ static int bma250_input_activate(struct sensor_api_t *s, int enable)
 static int bma250_input_set_delay(struct sensor_api_t *s, int64_t ns)
 {
 	struct sensor_desc *d = container_of(s, struct sensor_desc, api);
-	int fd = d->select_worker.get_fd(&d->select_worker);
 	int64_t usec = ns / 1000;
 	int ret;
 

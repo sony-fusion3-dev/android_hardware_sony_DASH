@@ -67,12 +67,6 @@ static int ak897x_set_delay(struct sensor_api_t *s, int64_t ns)
 	return 0;
 }
 
-static int ak897x_singleshot(struct sensor_desc *d)
-{
-	return d->sysfs.write(&d->sysfs, "single", DUMMY_DATA,
-			      strlen(DUMMY_DATA));
-}
-
 static int ak897x_set_interval(struct sensor_desc *d, int interval)
 {
 
@@ -148,12 +142,6 @@ static int ak897x_activate(struct sensor_api_t *s, int enable)
 
 exit:
 	return ret;
-}
-
-static int ak897x_form(void)
-{
-	/* TODO: implement form factor */
-	return AKM_ChangeFormFactor(0);
 }
 
 static void *ak897x_read(void *arg)

@@ -34,6 +34,8 @@
 #define TO_STRING_(x) #x
 #define TO_STRING(x) TO_STRING_(x)
 
+#define UNUSED_PARAM(param) ((void)(param))
+
 char const * const SYSFS_REGISTERS_FILE_NAME = TO_STRING( /sys/class/compass/CLASS_DEVICE_NAME/registers );
 
 #define ACC_SENSITIVITY 256
@@ -264,6 +266,8 @@ err_exit:
 
 static int ak897x_init(struct sensor_api_t *s)
 {
+	UNUSED_PARAM(s);
+
 	register_map_ak897x regs;
 	int16_t mag_layout[MAG_LAYOUT_ROW][MAG_LAYOUT_CLM] = {{1,0,0},{0,1,0},{0,0,1}};
 	int i;
@@ -368,15 +372,10 @@ static void ak897x_close(struct sensor_api_t *s)
 	}
 }
 
-static int ak897x_form(void)
-{
-	/* TODO: implement form factor */
-	return AKM_ChangeFormFactor(0);
-}
-
 static void ak897xna_compass_data(struct sensor_api_t *s, struct sensor_data_t *sd)
 {
-	struct wrapper_desc *d = container_of(s, struct wrapper_desc, api);
+	UNUSED_PARAM(s);
+
 	sensors_event_t data;
 	int err;
 	unsigned int cal;
