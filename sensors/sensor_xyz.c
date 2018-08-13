@@ -104,8 +104,8 @@ static int store_str_attr(struct sensor_desc *d, const char *attr,
 	}
 	rc = write(fd, val, strlen(val));
 	if (rc < 0)
-		ALOGE("%s: unable to write %s (fd %d), err %d\n", __func__,
-			d->phys_path, fd, errno);
+		ALOGE("%s: unable to write %s (fd %d), err %d, val '%s'\n", __func__,
+			d->phys_path, fd, errno, val);
 	close(fd);
 
 exit:
