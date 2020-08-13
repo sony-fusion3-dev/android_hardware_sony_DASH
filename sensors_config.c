@@ -24,6 +24,7 @@
 
 #define PRIMARY_CONFIG "/etc/dash.conf"
 #define SECONDARY_CONFIG "/etc/sensors.conf"
+#define VENDOR_CONFIG "/vendor/etc/sensors.conf"
 
 #define MAX_STR_LEN 64
 struct config_entry_t {
@@ -119,7 +120,9 @@ int sensors_config_read(char* filename)
 	} else {
 		fp = fopen(PRIMARY_CONFIG, "r");
 		if (!fp)
-			fp = fopen(SECONDARY_CONFIG, "r");
+			fp = fopen(VENDOR_CONFIG, "r");
+			if (!fp)
+				fp = fopen(SECONDARY_CONFIG, "r");
 	}
 
 	if (!fp) {
