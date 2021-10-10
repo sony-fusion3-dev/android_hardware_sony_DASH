@@ -8,7 +8,9 @@ include $(CLEAR_VARS)
 
 DASH_ROOT := $(LOCAL_PATH)
 LOCAL_PRELINK_MODULE := false
+ifneq ($(TARGET_USE_MULTIHAL),true)
 LOCAL_MODULE_RELATIVE_PATH := hw
+endif
 LOCAL_SHARED_LIBRARIES := \
 			liblog \
 			libcutils
