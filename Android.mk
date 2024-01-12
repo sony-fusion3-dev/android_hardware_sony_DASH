@@ -13,7 +13,8 @@ LOCAL_MODULE_RELATIVE_PATH := hw
 endif
 LOCAL_SHARED_LIBRARIES := \
 			liblog \
-			libcutils
+			libcutils \
+			libhardware
 
 LOCAL_SRC_FILES += 	sensors_module.c \
 			sensors_list.c \
